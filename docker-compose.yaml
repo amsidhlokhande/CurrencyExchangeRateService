@@ -15,7 +15,7 @@ services:
     volumes:
       - mysql-database-currency-volume:/var/lib/mysql
     networks:
-      - curreny-app-network
+      - currency-app-network
 
   zipkin:
     container_name: zipkin
@@ -24,7 +24,7 @@ services:
     ports:
       - "9411:9411"
     networks:
-      - curreny-app-network
+      - currency-app-network
 
   currencyexchangerateservice:
     container_name: currencyexchangerateservice
@@ -43,12 +43,12 @@ services:
       MYSQL_PASSWORD: currency
       ZIPKIN_SERVICE_NAME: zipkin
     networks:
-      - curreny-app-network
+      - currency-app-network
 
 volumes:
   mysql-database-currency-volume:
 
 networks:
-  curreny-app-network:
+  currency-app-network:
     driver: bridge
     attachable: true

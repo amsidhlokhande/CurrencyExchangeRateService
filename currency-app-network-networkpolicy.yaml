@@ -1,0 +1,13 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: currency-app-network
+spec:
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          io.kompose.network/currency-app-network: "true"
+  podSelector:
+    matchLabels:
+      io.kompose.network/currency-app-network: "true"

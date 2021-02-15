@@ -1,27 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: C:\Users\amsid\kompose.exe convert -f docker-compose.yaml
-    kompose.version: 1.21.0 (992df58d8)
-  creationTimestamp: null
   labels:
     io.kompose.service: currencyexchangerateservice
   name: currencyexchangerateservice
 spec:
+  minReadySeconds: 45
   replicas: 1
   selector:
     matchLabels:
       io.kompose.service: currencyexchangerateservice
-  strategy: {}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
-      annotations:
-        kompose.cmd: C:\Users\amsid\kompose.exe convert -f docker-compose.yaml
-        kompose.version: 1.21.0 (992df58d8)
-      creationTimestamp: null
       labels:
-        io.kompose.network/curreny-app-network: "true"
+        io.kompose.network/currency-app-network: "true"
         io.kompose.service: currencyexchangerateservice
     spec:
       containers:
@@ -39,12 +36,8 @@ spec:
         - name: ZIPKIN_SERVICE_NAME
           value: zipkin
         image: adithilokhande/currencyexchangerateservice:0.0.1-SNAPSHOT
-        imagePullPolicy: ""
+        imagePullPolicy: Always
         name: currencyexchangerateservice
         ports:
         - containerPort: 8100
-        resources: {}
       restartPolicy: Always
-      serviceAccountName: ""
-      volumes: null
-status: {}
