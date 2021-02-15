@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\Users\amsid\kompose.exe convert -f docker-compose.yaml
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: currencyexchangerateservice
+  name: currencyexchangerateservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: currencyexchangerateservice
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: C:\Users\amsid\kompose.exe convert -f docker-compose.yaml
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/curreny-app-network: "true"
+        io.kompose.service: currencyexchangerateservice
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_DATABASE
+          value: currenydb
+        - name: MYSQL_HOST
+          value: mysql
+        - name: MYSQL_PASSWORD
+          value: currency
+        - name: MYSQL_PORT
+          value: "3306"
+        - name: MYSQL_USERNAME
+          value: currency
+        - name: ZIPKIN_SERVICE_NAME
+          value: zipkin
+        image: adithilokhande/currencyexchangerateservice:0.0.1-SNAPSHOT
+        imagePullPolicy: ""
+        name: currencyexchangerateservice
+        ports:
+        - containerPort: 8100
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}
