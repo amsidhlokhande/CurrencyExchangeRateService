@@ -4,6 +4,7 @@ metadata:
   labels:
     io.kompose.service: currencyexchangerateservice
   name: currencyexchangerateservice
+  namespace: default
 spec:
   minReadySeconds: 45
   replicas: 1
@@ -24,7 +25,7 @@ spec:
       containers:
         - env:
             - name: MYSQL_DATABASE
-              value: currenydb
+              value: currencydb
             - name: MYSQL_HOST
               value: mysql
             - name: MYSQL_PASSWORD
@@ -39,15 +40,38 @@ spec:
           imagePullPolicy: Always
           name: currencyexchangerateservice
           ports:
-            - containerPort: 8100
-          livenessProbe:
-            failureThreshold: 5
+            - name: health-port
+              containerPort: 8100
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: 400m
+              memory: 1024Mi
+          readinessProbe:
             httpGet:
-              path: /health
-              port: liveness-port
-              scheme: HTTP
-            initialDelaySeconds: 60
+              port: health-port
+              path: /healthCheck
+            failureThreshold: 5
             periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 1
+            initialDelaySeconds: 60
       restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.kompose.service: currencyexchangerateservice
+  name: currencyexchangerateservice
+  namespace: default
+spec:
+  type: LoadBalancer
+  ports:
+    - name: "8100"
+      port: 8100
+      targetPort: 8100
+  selector:
+    io.kompose.service: currencyexchangerateservice
+  sessionAffinity: None
