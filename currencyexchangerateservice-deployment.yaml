@@ -34,9 +34,9 @@ spec:
               value: "3306"
             - name: MYSQL_USERNAME
               value: currency
-            - name: ZIPKIN_SERVICE_NAME
-              value: zipkin
-          image: adithilokhande/currencyexchangerateservice:0.0.1-SNAPSHOT
+            - name: ZIPKIN_SERVICE_URI
+              value: http://zipkin
+          image: adithilokhande/currencyexchangerateservice:0.0.2-SNAPSHOT
           imagePullPolicy: Always
           name: currencyexchangerateservice
           ports:
@@ -67,7 +67,7 @@ metadata:
   name: currencyexchangerateservice
   namespace: default
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
     - name: "8100"
       port: 8100
