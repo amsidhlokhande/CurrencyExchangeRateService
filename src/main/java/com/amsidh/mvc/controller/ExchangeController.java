@@ -17,8 +17,8 @@ public class ExchangeController {
     private ExchangeRateService exchangeRateService;
     private InstanceInformationService instanceInformationService;
 
-    @GetMapping("/healthCheck")
-    public String healthCheck() {
+    @GetMapping("/")
+    public String imHealthy() {
         return "Currency Exchange Rate Service is up and running";
     }
 
