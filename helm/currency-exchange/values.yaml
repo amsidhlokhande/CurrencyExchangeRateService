@@ -1,0 +1,8 @@
+app:
+  image: adithilokhande/currency-exchange:0.0.1-SNAPSHOT
+  port: 8000
+  replicas: 1
+  name: currency-exchange
+
+service:
+  servicetype: LoadBalancer
